@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Case Study — Forma App</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #111110;
+    --ink-muted: #888780;
+    --ink-faint: #d3d1c7;
+    --paper: #faf9f6;
+    --accent: #1D9E75;
+    --accent-light: #E1F5EE;
+    --serif: 'DM Serif Display', Georgia, serif;
+    --mono: 'DM Mono', monospace;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 300;
+    line-height: 1.8;
+    min-height: 100vh;
+  }
+
+  /* Layout */
+  .page {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 80px 40px 120px;
+  }
+
+  /* Header */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 100px;
+    padding-bottom: 32px;
+    border-bottom: 0.5px solid var(--ink-faint);
+  }
+
+  .brand {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+  }
+
+  .meta {
+    font-size: 11px;
+    color: var(--ink-muted);
+    letter-spacing: 0.06em;
+    text-align: right;
+  }
+
+  /* Hero */
+  .hero {
+    margin-bottom: 80px;
+  }
+
+  .label {
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 20px;
+    display: block;
+  }
+
+  .title {
+    font-family: var(--serif);
+    font-size: clamp(40px, 7vw, 68px);
+    font-weight: 400;
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    margin-bottom: 28px;
+  }
+
+  .title em {
+    font-style: italic;
+    color: var(--ink-muted);
+  }
+
+  .subtitle {
+    font-size: 14px;
+    line-height: 1.9;
+    color: var(--ink-muted);
+    max-width: 520px;
+    font-weight: 300;
+  }
+
+  /* Stats row */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--ink-faint);
+    border: 0.5px solid var(--ink-faint);
+    margin-bottom: 72px;
+  }
+
+  .stat {
+    background: var(--paper);
+    padding: 28px 24px;
+  }
+
+  .stat-num {
+    font-family: var(--serif);
+    font-size: 36px;
+    font-weight: 400;
+    color: var(--ink);
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .stat-label {
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+  }
+
+  /* Sections */
+  .section {
+    margin-bottom: 64px;
+  }
+
+  .section-header {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 32px;
+    align-items: baseline;
+    margin-bottom: 24px;
+  }
+
+  .section-num {
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    padding-top: 2px;
+  }
+
+  .section-title {
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+
+  .section-body {
+    padding-left: 112px;
+    color: var(--ink-muted);
+    font-size: 13.5px;
+    line-height: 1.9;
+  }
+
+  /* Image placeholder blocks */
+  .image-block {
+    width: 100%;
+    aspect-ratio: 16 / 7;
+    background: var(--accent-light);
+    margin: 32px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .image-block::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 24px,
+      rgba(29,158,117,0.06) 24px,
+      rgba(29,158,117,0.06) 25px
+    );
+  }
+
+  .image-label {
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Two-col grid */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin: 24px 0;
+  }
+
+  .card {
+    border: 0.5px solid var(--ink-faint);
+    padding: 24px;
+  }
+
+  .card-title {
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink);
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .card p {
+    color: var(--ink-muted);
+    font-size: 12.5px;
+    line-height: 1.8;
+  }
+
+  /* Divider */
+  .divider {
+    border: none;
+    border-top: 0.5px solid var(--ink-faint);
+    margin: 64px 0;
+  }
+
+  /* Pull quote */
+  .pull-quote {
+    padding: 40px 0;
+    border-top: 0.5px solid var(--ink-faint);
+    border-bottom: 0.5px solid var(--ink-faint);
+    margin: 48px 0;
+  }
+
+  .pull-quote blockquote {
+    font-family: var(--serif);
+    font-size: 26px;
+    font-weight: 400;
+    font-style: italic;
+    line-height: 1.4;
+    color: var(--ink);
+    margin-bottom: 16px;
+    max-width: 600px;
+  }
+
+  .pull-quote cite {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    font-style: normal;
+  }
+
+  /* Footer */
+  .footer {
+    margin-top: 100px;
+    padding-top: 32px;
+    border-top: 0.5px solid var(--ink-faint);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+
+  .footer-left p {
+    font-size: 11px;
+    color: var(--ink-muted);
+    letter-spacing: 0.06em;
+  }
+
+  .footer-mark {
+    font-family: var(--serif);
+    font-size: 18px;
+    color: var(--ink-faint);
+  }
+
+  /* Tag */
+  .tag {
+    display: inline-block;
+    background: var(--accent-light);
+    color: #0F6E56;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    margin-right: 6px;
+    margin-bottom: 6px;
+  }
+
+  @media (max-width: 600px) {
+    .page { padding: 48px 24px 80px; }
+    .header { flex-direction: column; gap: 16px; margin-bottom: 64px; }
+    .meta { text-align: left; }
+    .stats { grid-template-columns: 1fr; }
+    .section-header { grid-template-columns: 1fr; gap: 6px; }
+    .section-body { padding-left: 0; }
+    .two-col { grid-template-columns: 1fr; }
+    .footer { flex-direction: column; gap: 24px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Header -->
+  <header class="header">
+    <div class="brand">Case Study</div>
+    <div class="meta">
+      Product Design<br>
+      2024 — Ongoing
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <span class="label">01 — Overview</span>
+    <h1 class="title">Forma<br><em>Rethinking how</em><br>teams track work</h1>
+    <p class="subtitle">
+      A zero-friction task management app built for async teams. We redesigned the core experience from the ground up — reducing cognitive load while surfacing what actually matters.
+    </p>
+  </section>
+
+  <!-- Stats -->
+  <div class="stats">
+    <div class="stat">
+      <span class="stat-num">3.2×</span>
+      <span class="stat-label">Faster task creation</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">↓68%</span>
+      <span class="stat-label">Support tickets</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">4.8</span>
+      <span class="stat-label">App Store rating</span>
+    </div>
+  </div>
+
+  <!-- Tags -->
+  <div style="margin-bottom: 72px;">
+    <span class="tag">iOS & Android</span>
+    <span class="tag">Design Systems</span>
+    <span class="tag">User Research</span>
+    <span class="tag">Prototyping</span>
+  </div>
+
+  <!-- Section 1 -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <h2 class="section-title">The Problem</h2>
+    </div>
+    <div class="section-body">
+      <p>Existing tools demanded too much setup before delivering value. Teams were spending more time managing their tools than doing actual work. Onboarding drop-off was at 61% within the first week — a clear signal the experience was broken from the start.</p>
+
+      <div class="two-col" style="margin-top: 28px;">
+        <div class="card">
+          <span class="card-title">Before</span>
+          <p>Average 14 taps to create a task. Nested menus, mandatory fields, no sensible defaults. Teams abandoned the app within days.</p>
+        </div>
+        <div class="card">
+          <span class="card-title">Insight</span>
+          <p>Users didn't need more features — they needed fewer decisions. The interface was optimising for flexibility at the cost of clarity.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- Image block -->
+  <div class="image-block">
+    <span class="image-label">Research synthesis / affinity map</span>
+  </div>
+
+  <!-- Section 2 -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <h2 class="section-title">The Approach</h2>
+    </div>
+    <div class="section-body">
+      <p>We ran 24 contextual interviews across three industries, shadowing teams during their actual workdays. Every friction point was catalogued. From there, we ran a design sprint to rapidly prototype and validate three distinct interaction models before committing to a direction.</p>
+      <p style="margin-top: 16px;">The winning concept centred on a single-input philosophy — one text field that intelligently parses intent. Type a task, and Forma infers the assignee, deadline, and priority from natural language.</p>
+    </div>
+  </div>
+
+  <!-- Pull quote -->
+  <div class="pull-quote">
+    <blockquote>"It felt like the app was reading my mind — I never had to explain myself twice."</blockquote>
+    <cite>— Beta user, 6-week trial</cite>
+  </div>
+
+  <!-- Section 3 -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">04</span>
+      <h2 class="section-title">The Solution</h2>
+    </div>
+    <div class="section-body">
+      <p>A radically simplified interface built on three principles: speed of capture, clarity of ownership, and honest progress tracking. We stripped the UI to its essential components and introduced a persistent command bar that works across the entire app.</p>
+    </div>
+  </div>
+
+  <!-- Two image blocks -->
+  <div class="two-col">
+    <div class="image-block" style="aspect-ratio: 3/4;">
+      <span class="image-label">Home screen</span>
+    </div>
+    <div class="image-block" style="aspect-ratio: 3/4;">
+      <span class="image-label">Task detail</span>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- Section 4 -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">05</span>
+      <h2 class="section-title">The Outcome</h2>
+    </div>
+    <div class="section-body">
+      <p>Launched in Q3 2024 to 12,000 beta users. Within 8 weeks, weekly active usage grew by 180%. The redesigned onboarding cut drop-off from 61% to 18%. Customer support volume dropped by 68% — the interface had become self-explanatory.</p>
+      <p style="margin-top: 16px;">Forma is now the primary productivity tool for over 400 remote-first teams, with an App Store rating of 4.8 and a Net Promoter Score of 72.</p>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-left">
+      <p>Studio — 2024</p>
+      <p style="margin-top: 4px; color: #b4b2a9;">Product Design · Research · Systems</p>
+    </div>
+    <div class="footer-mark">F</div>
+  </footer>
+
+</div>
+</body>
+</html>
